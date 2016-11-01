@@ -1,3 +1,3 @@
 # dnSpy-Extensions
 
-TraceSpy Extension: adds a Tool WIndow that receives system trace mesages
+TraceSpy Extension: adds a Tool Window that receives system trace mesages
