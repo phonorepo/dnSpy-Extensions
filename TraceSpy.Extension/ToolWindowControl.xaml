@@ -9,6 +9,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <!-- InitDataTemplateAP.Initialize will initialize the context menu to prevent the default
          tool window context menu from showing. -->
+
+
     <Grid
         mvvm:InitDataTemplateAP.Initialize="True"
         Background="Transparent"
@@ -21,19 +23,23 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
-       
 
-            <ToggleButton Grid.Row="0" Name="TraceSpyButton1" DockPanel.Dock="Top" Click="TraceSpyButton1_Click">Start</ToggleButton>
-            <ListView Grid.Row="1" Name="TraceSpyListView" Height="Auto" ItemsSource="{Binding Source=TSpy.Queue}" VirtualizingStackPanel.IsVirtualizing="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Index}" Header="Index" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Pid}" Header="Pid" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=ProcessName}" Header="ProcessName" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Text}" Header="Text" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Ticks}" Header="Ticks" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
+
+        <StackPanel Grid.Row="0" Name="TraceSpyButton1" DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center">
+            <Label Name="TraceSpyLblFilterPID">Filter PID:</Label>
+            <TextBox Name="TraceSpyFilterPID" Width="60" Margin="2" VerticalAlignment="Center" PreviewTextInput="ProcessFilterPIDInput" TextChanged="TraceSpyFilterPID_TextChanged" ToolTip="Enter ID of a process or 0 to disable filtering">0</TextBox>
+            <ToggleButton Click="TraceSpyButton1_Click" Margin="2">Start</ToggleButton>
+        </StackPanel>
+        <ListView Grid.Row="1" Name="TraceSpyListView" Height="Auto" ItemsSource="{Binding Source=TSpy.Queue}" VirtualizingStackPanel.IsVirtualizing="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ListView.View>
+                <GridView x:Name="GridViewTraceSpy">
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Index}" Header="Index" Width="50"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Ticks}" Header="Ticks" Width="50"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Pid}" Header="Pid" Width="60" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ProcessName}" Header="ProcessName" Width="120"/>
+                    <GridViewColumn x:Name="ColText" DisplayMemberBinding="{Binding Path=Text}" Header="Text" Width="Auto"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>
