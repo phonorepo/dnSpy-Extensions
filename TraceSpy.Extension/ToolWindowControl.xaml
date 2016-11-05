@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TraceSpy.Extension"
              xmlns:mvvm="clr-namespace:dnSpy.Contracts.MVVM;assembly=dnSpy.Contracts.DnSpy"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="400">
     <!-- InitDataTemplateAP.Initialize will initialize the context menu to prevent the default
          tool window context menu from showing. -->
 
@@ -26,9 +26,12 @@
 
 
         <StackPanel Grid.Row="0" Name="TraceSpyButton1" DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center">
-            <Label Name="TraceSpyLblFilterPID">Filter PID:</Label>
+            <ToggleButton Name="TraceSpyTButton1" Click="TraceSpyButton1_Click" Margin="2">Start</ToggleButton>
+            <Label Name="TraceSpyLblFilterPID" Margin="2">Filter PID:</Label>
             <TextBox Name="TraceSpyFilterPID" Width="60" Margin="2" VerticalAlignment="Center" PreviewTextInput="ProcessFilterPIDInput" TextChanged="TraceSpyFilterPID_TextChanged" ToolTip="Enter ID of a process or 0 to disable filtering">0</TextBox>
-            <ToggleButton Click="TraceSpyButton1_Click" Margin="2">Start</ToggleButton>
+            <Button Name="TraceSpyClearFilter" Margin="2" Click="TraceSpyClearFilter_Click">Clear filter</Button>
+            <ToggleButton Name="TraceSpyTButton2" Margin="2" Click="TraceSpyButton2_Click">AutoScroll</ToggleButton>
+            <ToggleButton Name="TraceSpyTButton3" Margin="2" Click="TraceSpyButton3_Click">Redirect to Log</ToggleButton>
         </StackPanel>
         <ListView Grid.Row="1" Name="TraceSpyListView" Height="Auto" ItemsSource="{Binding Source=TSpy.Queue}" VirtualizingStackPanel.IsVirtualizing="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListView.View>

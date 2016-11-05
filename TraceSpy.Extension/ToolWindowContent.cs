@@ -9,6 +9,8 @@ using dnSpy.Contracts.Menus;
 using dnSpy.Contracts.MVVM;
 using dnSpy.Contracts.ToolWindows;
 using dnSpy.Contracts.ToolWindows.App;
+using dnSpy.Contracts.Text;
+using dnSpy.Contracts.Documents.TreeView;
 
 // Adds a tool window and a command that will show it. The command is added to the View menu and a
 // keyboard shortcut is added to the main window. Keyboard shortcut Ctrl+Alt+Z shows the tool window.
@@ -28,15 +30,47 @@ namespace TraceSpy.Extension {
 	}
 
 	// Adds a menu item to the View menu to show the tool window
-	[ExportMenuItem(OwnerGuid = MenuConstants.APP_MENU_VIEW_GUID, Header = "TraceSpy", InputGestureText = "Ctrl+Alt+Z", Group = MenuConstants.GROUP_APP_MENU_VIEW_WINDOWS, Order = 2000)]
+	[ExportMenuItem(OwnerGuid = MenuConstants.APP_MENU_VIEW_GUID, Header = "Trace Spy", InputGestureText = "Ctrl+Alt+Z", Group = MenuConstants.GROUP_APP_MENU_VIEW_WINDOWS, Order = 2000)]
 	sealed class ViewCommand1 : MenuItemCommand {
 		ViewCommand1()
 			: base(ToolWindowLoader.OpenToolWindow) {
 		}
 	}
 
-	// Dummy dependency "needed" by MainToolWindowContentProvider
-	[Export]
+    [ExportMenuItem(Header = "Trace Spy: Filter for selected PID", Group = MenuConstants.GROUP_CTX_DOCUMENTS_OTHER, Order = 50)]
+    sealed class SortAssembliesCtxMenuCommand : MenuItemBase
+    {
+        readonly IDocumentTreeView documentTreeView;
+
+        [ImportingConstructor]
+        SortAssembliesCtxMenuCommand(IDocumentTreeView documentTreeView)
+        {
+            this.documentTreeView = documentTreeView;
+        }
+
+        public override bool IsEnabled(IMenuItemContext context) => documentTreeView.CanSortTopNodes;
+        //public override void Execute(IMenuItemContext context) => documentTreeView.SortTopNodes();
+        public override void Execute(IMenuItemContext context)
+        {
+            if(TraceSpy.Extension.ToolWindowControl.TSpy != null && ToolWindowControl.TSpyListView != null && ToolWindowControl.TSpyListView.SelectedItem != null)
+            {
+                Tracers.TraceLine line = ToolWindowControl.TSpyListView.SelectedItem as Tracers.TraceLine;
+                ToolWindowControl.Instance.TraceSpyFilterPID.Text = line.Pid.ToString();
+                TraceSpy.Extension.ToolWindowControl.TSpy.FilterPID = line.Pid;
+            }
+            else
+            {
+                TraceSpyLogger.Instance.WriteLine(TextColor.Error, "TraceSpy: You need to select an exitisting TraceLine.");
+            }
+        }
+
+            
+    }
+	
+
+
+    // Dummy dependency "needed" by MainToolWindowContentProvider
+    [Export]
 	sealed class DeppDep {
 		public void Hello() {
 		}
@@ -69,11 +103,12 @@ namespace TraceSpy.Extension {
 		}
 	}
 
-	sealed class ToolWindowContentImpl : ToolWindowContent {
-    //DONE: Use your own guid
-    //public static readonly Guid THE_GUID = new Guid("18785447-21A8-41DB-B8AD-0F166AEC0D08");
-    public static readonly Guid THE_GUID = new Guid("9fa674c6-d1b0-42de-832d-ceb5c561987d");
-		public const AppToolWindowLocation DEFAULT_LOCATION = AppToolWindowLocation.DefaultHorizontal;
+	sealed class ToolWindowContentImpl : ToolWindowContent
+    {
+        //DONE: Use your own guid
+        //public static readonly Guid THE_GUID = new Guid("18785447-21A8-41DB-B8AD-0F166AEC0D08");
+        public static readonly Guid THE_GUID = new Guid("9fa674c6-d1b0-42de-832d-ceb5c561987d");
+        public const AppToolWindowLocation DEFAULT_LOCATION = AppToolWindowLocation.DefaultHorizontal;
 
 		public override Guid Guid => THE_GUID;
 		public override string Title => "TraceSpy";
@@ -124,7 +159,6 @@ namespace TraceSpy.Extension {
 	}
 
 	sealed class ToolWindowVM : ViewModelBase {
-
 		public bool IsEnabled { get; set; }
 		public bool IsVisible { get; set; }
 	}

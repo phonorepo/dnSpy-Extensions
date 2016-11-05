@@ -11,10 +11,11 @@ using dnSpy.Contracts.Text;
 
 namespace TraceSpy.Extension {
 	// Holds an instance of our logger text pane
-	static class MyLogger {
+	static class TraceSpyLogger
+    {
 		//DONE: Use your own GUID
 		//public static readonly Guid THE_GUID = new Guid("26F2F5B2-9C5A-4F99-A026-4946A068500F");
-    public static readonly Guid THE_GUID = new Guid("47db472a-6c32-4994-b29d-29bc7ea9ed01");
+        public static readonly Guid THE_GUID = new Guid("47db472a-6c32-4994-b29d-29bc7ea9ed01");
 
 		public static IOutputTextPane Instance {
 			get {
@@ -37,7 +38,7 @@ namespace TraceSpy.Extension {
 		sealed class InitializeLogger : IAutoLoaded {
 			[ImportingConstructor]
 			InitializeLogger(IOutputService outputService) {
-				Instance = outputService.Create(THE_GUID, "My Logger");
+				Instance = outputService.Create(THE_GUID, "TraceSpy Logger");
 				Instance.WriteLine("Logger initialized!");
 			}
 		}
@@ -66,15 +67,16 @@ namespace TraceSpy.Extension {
 				return null;
 
 			// Check if it's our logger text pane
-			if (textPane.Guid != MyLogger.THE_GUID)
+			if (textPane.Guid != TraceSpyLogger.THE_GUID)
 				return null;
 
-			Debug.Assert(textPane == MyLogger.Instance);
+			Debug.Assert(textPane == TraceSpyLogger.Instance);
 
 			return new LogEditorCtxMenuContext(textPane);
 		}
 	}
 
+    /*
 	// GROUP_CTX_OUTPUT_USER_COMMANDS can be used for user commands, like our commands below:
 	[ExportMenuItem(Header = "Write Hello to the Log", Group = MenuConstants.GROUP_CTX_OUTPUT_USER_COMMANDS, Order = 0)]
 	sealed class WriteHelloCtxMenuCommand : LogEditorCtxMenuCommand {
@@ -94,4 +96,5 @@ namespace TraceSpy.Extension {
 		public override void Execute(LogEditorCtxMenuContext context) =>
 			context.TextPane.WriteLine(TextColor.Error, "I'm afraid I can't do that.");
 	}
+    */
 }

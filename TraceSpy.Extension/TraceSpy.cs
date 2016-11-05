@@ -1,3 +1,4 @@
+using dnSpy.Contracts.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -198,7 +199,6 @@ namespace TraceSpy.Extension
             public ObservableCollection<TraceLine> Queue = new ObservableCollection<TraceLine>();
 
 
-
             public void Dispose()
             {
                 Dispose(true);
@@ -328,11 +328,13 @@ namespace TraceSpy.Extension
 
                             if (FilterPID > 0 && pid == FilterPID)
                             {
-                                Queue.Add(line);
+                                if (ToolWindowControl.RedirectToLog) TraceSpyLogger.Instance.WriteLine(line.ToString());
+                                else Queue.Add(line);
                             }
                             else if (FilterPID == 0)
                             {
-                                Queue.Add(line);
+                                if(ToolWindowControl.RedirectToLog) TraceSpyLogger.Instance.WriteLine(line.ToString());
+                                else Queue.Add(line);
                             }
                         }
                     }
