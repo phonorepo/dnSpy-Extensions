@@ -31,7 +31,7 @@
             <TextBox Name="TraceSpyFilterPID" Width="60" Margin="2" VerticalAlignment="Center" PreviewTextInput="ProcessFilterPIDInput" TextChanged="TraceSpyFilterPID_TextChanged" ToolTip="Enter ID of a process or 0 to disable filtering">0</TextBox>
             <Button Name="TraceSpyClearFilter" Margin="2" Click="TraceSpyClearFilter_Click">Clear filter</Button>
             <ToggleButton Name="TraceSpyTButton2" Margin="2" Click="TraceSpyButton2_Click">AutoScroll</ToggleButton>
-            <ToggleButton Name="TraceSpyTButton3" Margin="2" Click="TraceSpyButton3_Click">Redirect to Log</ToggleButton>
+            <ToggleButton Name="TraceSpyTButton3" Margin="2" Click="TraceSpyButton3_Click" ToolTip="Redirects the trace messages to Output Log (View --> Output --> select TraceSpy Logger)">Redirect to Log</ToggleButton>
         </StackPanel>
         <ListView Grid.Row="1" Name="TraceSpyListView" Height="Auto" ItemsSource="{Binding Source=TSpy.Queue}" VirtualizingStackPanel.IsVirtualizing="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListView.View>
