@@ -38,17 +38,17 @@ namespace TraceSpy.Extension {
 	}
 
     [ExportMenuItem(Header = "Trace Spy: Filter for selected PID", Group = MenuConstants.GROUP_CTX_DOCUMENTS_OTHER, Order = 50)]
-    sealed class SortAssembliesCtxMenuCommand : MenuItemBase
+    sealed class TraceSpyFilterPIDCtxMenuCommand : MenuItemBase
     {
-        readonly IDocumentTreeView documentTreeView;
+        
 
         [ImportingConstructor]
-        SortAssembliesCtxMenuCommand(IDocumentTreeView documentTreeView)
+        TraceSpyFilterPIDCtxMenuCommand()
         {
-            this.documentTreeView = documentTreeView;
+            
         }
 
-        public override bool IsEnabled(IMenuItemContext context) => documentTreeView.CanSortTopNodes;
+        //public override bool IsEnabled(IMenuItemContext context) => documentTreeView.CanSortTopNodes;
         //public override void Execute(IMenuItemContext context) => documentTreeView.SortTopNodes();
         public override void Execute(IMenuItemContext context)
         {
@@ -61,10 +61,14 @@ namespace TraceSpy.Extension {
             else
             {
                 TraceSpyLogger.Instance.WriteLine(TextColor.Error, "TraceSpy: You need to select an exitisting TraceLine.");
+                TraceSpyLogger.Instance.WriteLine(TextColor.Error, "TraceSpy: context.CreatorObject.Guid: " + context.CreatorObject.Guid);
+
+
             }
         }
+        //public override bool IsVisible(IMenuItemContext context) => context.CreatorObject.Guid == new Guid("9bd7c228-91a0-4140-8e8b-ab0450b418ca");
+        public override bool IsVisible(IMenuItemContext context) => context.CreatorObject.Guid == new Guid(MenuConstants.GUIDOBJ_UNKNOWN_GUID); 
 
-            
     }
 	
 
