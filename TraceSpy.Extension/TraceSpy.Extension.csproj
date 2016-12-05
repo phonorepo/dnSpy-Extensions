@@ -56,10 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="dnlib">
+      <HintPath>..\dnSpy\dnlib.dll</HintPath>
     </Reference>
     <Reference Include="dnSpy.Contracts.DnSpy">
+      <HintPath>..\dnSpy\dnSpy.Contracts.DnSpy.dll</HintPath>
     </Reference>
     <Reference Include="dnSpy.Contracts.Logic">
+      <HintPath>..\dnSpy\dnSpy.Contracts.Logic.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
